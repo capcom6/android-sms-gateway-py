@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "android-sms-gateway"
+description = "A client library for sending and managing SMS messages via the Android SMS Gateway API"
+requires-python = ">=3.6"
+authors = [{ name = "Aleksandr Soloshenko", email = "i@capcom.me" }]
+maintainers = [{ name = "Aleksandr Soloshenko", email = "i@capcom.me" }]
+readme = "README.md"
+license = { text = "Apache-2.0" }
+keywords = ["android", "sms", "gateway"]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = { attr = "android_sms_gateway.__version__" }
+
+[project.urls]
+Homepage = "https://sms.capcom.me"
+Repository = "https://github.com/capcom6/android-sms-gateway-py"
+
+[project.optional-dependencies]
+dev = ["setuptools", "pytest", "black", "flake8", "wheel"]
+requests = ["requests"]
+httpx = ["httpx"]
+aiohttp = ["aiohttp"]

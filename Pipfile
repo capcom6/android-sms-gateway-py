@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+[dev-packages]
+setuptools = "*"
+pytest = "*"
+black = "*"
+flake8 = "*"
+wheel = "*"
+twine = "*"
+build = "*"
+importlib-metadata = "*"
+
+[requires]
+python_version = "3"
+
+[requests]
+requests = "*"
+
+[httpx]
+httpx = "*"
+
+[aiohttp]
+aiohttp = "*"
