@@ -1,5 +1,13 @@
 # Android SMS Gateway Python API Client
 
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=for-the-badge)](https://github.com/capcom6/android-sms-gateway-py/blob/main/LICENSE)
+[![GitHub Issues](https://img.shields.io/github/issues/capcom6/android-sms-gateway-py.svg?style=for-the-badge)](https://github.com/capcom6/android-sms-gateway-py/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/capcom6/android-sms-gateway-py.svg?style=for-the-badge)](https://github.com/capcom6/android-sms-gateway-py/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/capcom6/android-sms-gateway-py.svg?style=for-the-badge)](https://github.com/capcom6/android-sms-gateway-py/network)
+[![PyPI Version](https://img.shields.io/pypi/v/android-sms-gateway.svg?style=for-the-badge)](https://pypi.org/project/android-sms-gateway/)
+[![Python Version](https://img.shields.io/pypi/pyversions/android-sms-gateway.svg?style=for-the-badge)](https://pypi.org/project/android-sms-gateway/)
+[![Downloads](https://img.shields.io/pypi/dm/android-sms-gateway.svg?style=for-the-badge)](https://pypi.org/project/android-sms-gateway/)
+
 This is a Python client library for interfacing with the [Android SMS Gateway](https://sms.capcom.me) API.
 
 ## Requirements
