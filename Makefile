@@ -14,7 +14,7 @@ test:
 
 # Lint the project with flake8
 lint:
-	pipenv run flake8 $(PACKAGE_NAME)
+	pipenv run flake8 $(PACKAGE_NAME) tests
 
 # Build the project
 build:

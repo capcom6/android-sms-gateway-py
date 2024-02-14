@@ -60,6 +60,6 @@ class MessageState:
                 RecipientState.from_dict(recipient)
                 for recipient in payload["recipients"]
             ],
-            is_hashed=payload["isHashed"],
-            is_encrypted=payload["isEncrypted"],
+            is_hashed=payload.get("isHashed", False),
+            is_encrypted=payload.get("isEncrypted", False),
         )
