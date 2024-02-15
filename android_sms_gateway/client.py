@@ -1,18 +1,25 @@
 import abc
 import base64
+import dataclasses
 import logging
 import sys
 import typing as t
 
 from . import ahttp, domain, http
 from .constants import DEFAULT_URL, VERSION
+from .encryption import BaseEncryptor
 
 logger = logging.getLogger(__name__)
 
 
 class BaseClient(abc.ABC):
     def __init__(
-        self, login: str, password: str, *, base_url: str = DEFAULT_URL
+        self,
+        login: str,
+        password: str,
+        *,
+        base_url: str = DEFAULT_URL,
+        encryptor: t.Optional[BaseEncryptor] = None,
     ) -> None:
         credentials = base64.b64encode(f"{login}:{password}".encode("utf-8")).decode(
             "utf-8"
@@ -23,6 +30,44 @@ class BaseClient(abc.ABC):
             "User-Agent": f"android-sms-gateway/{VERSION} (client; python {sys.version_info.major}.{sys.version_info.minor})",
         }
         self.base_url = base_url.rstrip("/")
+        self.encryptor = encryptor
+
+    def _encrypt(self, message: domain.Message) -> domain.Message:
+        if self.encryptor is None:
+            return message
+
+        if message.is_encrypted:
+            raise ValueError("Message is already encrypted")
+
+        message = dataclasses.replace(
+            message,
+            is_encrypted=True,
+            message=self.encryptor.encrypt(message.message),
+            phone_numbers=[
+                self.encryptor.encrypt(phone) for phone in message.phone_numbers
+            ],
+        )
+
+        return message
+
+    def _decrypt(self, state: domain.MessageState) -> domain.MessageState:
+        if state.is_encrypted and self.encryptor is None:
+            raise ValueError("Message is encrypted but encryptor is not set")
+
+        if self.encryptor is None:
+            return state
+
+        return dataclasses.replace(
+            state,
+            recipients=[
+                dataclasses.replace(
+                    recipient,
+                    phone_number=self.encryptor.decrypt(recipient.phone_number),
+                )
+                for recipient in state.recipients
+            ],
+            is_encrypted=False,
+        )
 
 
 class APIClient(BaseClient):
@@ -32,10 +77,11 @@ class APIClient(BaseClient):
         password: str,
         *,
         base_url: str = DEFAULT_URL,
-        http_client: t.Optional[http.HttpClient] = None,
+        encryptor: t.Optional[BaseEncryptor] = None,
+        http: t.Optional[http.HttpClient] = None,
     ) -> None:
-        super().__init__(login, password, base_url=base_url)
-        self.http = http_client
+        super().__init__(login, password, base_url=base_url, encryptor=encryptor)
+        self.http = http
 
     def __enter__(self):
         if self.http is not None:
@@ -50,17 +96,22 @@ class APIClient(BaseClient):
         self.http = None
 
     def send(self, message: domain.Message) -> domain.MessageState:
-        return domain.MessageState.from_dict(
-            self.http.post(
-                f"{self.base_url}/message",
-                payload=message.asdict(),
-                headers=self.headers,
+        message = self._encrypt(message)
+        return self._decrypt(
+            domain.MessageState.from_dict(
+                self.http.post(
+                    f"{self.base_url}/message",
+                    payload=message.asdict(),
+                    headers=self.headers,
+                )
             )
         )
 
     def get_state(self, _id: str) -> domain.MessageState:
-        return domain.MessageState.from_dict(
-            self.http.get(f"{self.base_url}/message/{_id}", headers=self.headers)
+        return self._decrypt(
+            domain.MessageState.from_dict(
+                self.http.get(f"{self.base_url}/message/{_id}", headers=self.headers)
+            )
         )
 
 
@@ -71,9 +122,10 @@ class AsyncAPIClient(BaseClient):
         password: str,
         *,
         base_url: str = DEFAULT_URL,
+        encryptor: t.Optional[BaseEncryptor] = None,
         http_client: t.Optional[ahttp.AsyncHttpClient] = None,
     ) -> None:
-        super().__init__(login, password, base_url=base_url)
+        super().__init__(login, password, base_url=base_url, encryptor=encryptor)
         self.http = http_client
 
     async def __aenter__(self):
@@ -89,15 +141,22 @@ class AsyncAPIClient(BaseClient):
         self.http = None
 
     async def send(self, message: domain.Message) -> domain.MessageState:
-        return domain.MessageState.from_dict(
-            await self.http.post(
-                f"{self.base_url}/message",
-                payload=message.asdict(),
-                headers=self.headers,
+        message = self._encrypt(message)
+        return self._decrypt(
+            domain.MessageState.from_dict(
+                await self.http.post(
+                    f"{self.base_url}/message",
+                    payload=message.asdict(),
+                    headers=self.headers,
+                )
             )
         )
 
     async def get_state(self, _id: str) -> domain.MessageState:
-        return domain.MessageState.from_dict(
-            await self.http.get(f"{self.base_url}/message/{_id}", headers=self.headers)
+        return self._decrypt(
+            domain.MessageState.from_dict(
+                await self.http.get(
+                    f"{self.base_url}/message/{_id}", headers=self.headers
+                )
+            )
         )

@@ -26,3 +26,6 @@ httpx = "*"
 
 [aiohttp]
 aiohttp = "*"
+
+[encryption]
+pycryptodome = "*"
