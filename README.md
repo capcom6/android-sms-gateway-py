@@ -18,6 +18,10 @@ This is a Python client library for interfacing with the [Android SMS Gateway](h
     - [aiohttp](https://pypi.org/project/aiohttp/)
     - [httpx](https://pypi.org/project/httpx/)
 
+Optional:
+
+- [pycryptodome](https://pypi.org/project/pycryptodome/) - end-to-end encryption support
+
 ## Installation
 
 ```bash
@@ -32,7 +36,13 @@ pip install android_sms_gateway[aiohttp]
 pip install android_sms_gateway[httpx]
 ```
 
-## Usage
+With encrypted messages support:
+
+```bash
+pip install android_sms_gateway[encryption]
+```
+
+## Quickstart
 
 Here's an example of using the client:
 
@@ -40,11 +50,11 @@ Here's an example of using the client:
 import asyncio
 import os
 
-from android_sms_gateway import client, domain
+from android_sms_gateway import client, domain, Encryptor
 
 login = os.getenv("ANDROID_SMS_GATEWAY_LOGIN")
 password = os.getenv("ANDROID_SMS_GATEWAY_PASSWORD")
-
+# encryptor = Encryptor('passphrase') # for end-to-end encryption, see https://sms.capcom.me/privacy/encryption/
 
 message = domain.Message(
     "Your message text here.",
@@ -52,7 +62,11 @@ message = domain.Message(
 )
 
 def sync_client():
-    with client.APIClient(login, password) as c:
+    with client.APIClient(
+        login, 
+        password,
+        # encryptor=encryptor,
+    ) as c:
         state = c.send(message)
         print(state)
 
@@ -61,7 +75,11 @@ def sync_client():
 
 
 async def async_client():
-    async with client.AsyncAPIClient(login, password) as c:
+    async with client.AsyncAPIClient(
+        login, 
+        password,
+        # encryptor=encryptor,
+    ) as c:
         state = await c.send(message)
         print(state)
 

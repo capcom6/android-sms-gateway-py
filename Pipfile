@@ -19,10 +19,13 @@ importlib-metadata = "*"
 python_version = "3"
 
 [requests]
-requests = "*"
+requests = "~=2.31"
 
 [httpx]
-httpx = "*"
+httpx = "~=0.26"
 
 [aiohttp]
-aiohttp = "*"
+aiohttp = "~=3.9"
+
+[encryption]
+pycryptodome = "~=3.20"
