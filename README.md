@@ -1,4 +1,4 @@
-# Android SMS Gateway Python API Client
+# SMS Gateway for Android™ Python API Client
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=for-the-badge)](https://github.com/capcom6/android-sms-gateway-py/blob/main/LICENSE)
 [![GitHub Issues](https://img.shields.io/github/issues/capcom6/android-sms-gateway-py.svg?style=for-the-badge)](https://github.com/capcom6/android-sms-gateway-py/issues)
@@ -8,7 +8,7 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/android-sms-gateway.svg?style=for-the-badge)](https://pypi.org/project/android-sms-gateway/)
 [![Downloads](https://img.shields.io/pypi/dm/android-sms-gateway.svg?style=for-the-badge)](https://pypi.org/project/android-sms-gateway/)
 
-This is a Python client library for interfacing with the [Android SMS Gateway](https://sms.capcom.me) API.
+This is a Python client library for interfacing with the [SMS Gateway for Android](https://sms-gate.app) API.
 
 ## Requirements
 
@@ -54,7 +54,7 @@ from android_sms_gateway import client, domain, Encryptor
 
 login = os.getenv("ANDROID_SMS_GATEWAY_LOGIN")
 password = os.getenv("ANDROID_SMS_GATEWAY_PASSWORD")
-# encryptor = Encryptor('passphrase') # for end-to-end encryption, see https://sms.capcom.me/privacy/encryption/
+# encryptor = Encryptor('passphrase') # for end-to-end encryption, see https://sms-gate.app/privacy/encryption/
 
 message = domain.Message(
     "Your message text here.",
