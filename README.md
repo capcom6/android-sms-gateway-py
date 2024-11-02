@@ -12,7 +12,7 @@ This is a Python client library for interfacing with the [SMS Gateway for Androi
 
 ## Requirements
 
-- Python >= 3.6
+- Python >= 3.7
 - One of the following packages:
     - [requests](https://pypi.org/project/requests/)
     - [aiohttp](https://pypi.org/project/aiohttp/)
