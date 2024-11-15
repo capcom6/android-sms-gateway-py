@@ -35,7 +35,7 @@ version = { attr = "android_sms_gateway.__version__" }
 
 [project.urls]
 Homepage = "https://sms-gate.app"
-Repository = "https://github.com/capcom6/android-sms-gateway-py"
+Repository = "https://github.com/android-sms-gateway/client-py"
 
 [project.optional-dependencies]
 dev = ["setuptools", "pytest", "black", "flake8", "wheel"]
