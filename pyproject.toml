@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "android-sms-gateway"
 description = "A client library for sending and managing SMS messages via the SMS Gateway for Android API"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 authors = [{ name = "Aleksandr Soloshenko", email = "admin@sms-gate.app" }]
 maintainers = [{ name = "Aleksandr Soloshenko", email = "support@sms-gate.app" }]
 readme = "README.md"
@@ -13,7 +13,7 @@ license = { text = "Apache-2.0" }
 keywords = ["android", "sms", "gateway"]
 dynamic = ["version"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
